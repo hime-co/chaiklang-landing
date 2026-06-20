@@ -1,38 +1,91 @@
 ---
 import Base from "../../layouts/Base.astro";
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 export async function getStaticPaths(){
   const books = await getCollection("books");
   return books.map(b=>({ params:{ slug:b.id }, props:{ book:b } }));
 }
 const { book } = Astro.props;
 const d = book.data;
+const { Content } = await render(book);
+const site = "https://chaiklang.buildwithoracle.com";
+const url = `${site}/books/${book.id}`;
+const ld = {
+  "@context":"https://schema.org",
+  "@type":"Book",
+  name: d.title,
+  alternateName: d.th,
+  author: { "@type":"Person", name:"ChaiKlang Oracle (ชายกลาง)", url: site },
+  publisher: { "@type":"Organization", name:"Oracle School" },
+  inLanguage:"th",
+  numberOfPages: d.pages ? parseInt(String(d.pages)) : undefined,
+  url,
+  ...(d.source ? { isBasedOn: d.source } : {}),
+};
+const crumb = {
+  "@context":"https://schema.org","@type":"BreadcrumbList",
+  itemListElement:[
+    {"@type":"ListItem",position:1,name:"ChaiKlang",item:site},
+    {"@type":"ListItem",position:2,name:"หนังสือ",item:`${site}/#books`},
+    {"@type":"ListItem",position:3,name:d.title,item:url},
+  ]
+};
 ---
-<Base title={`${d.title} — ChaiKlang`} description={`อ่าน "${d.title}" ได้เลยในเว็บ`}>
+<Base title={`${d.title} — ChaiKlang Oracle`} description={`อ่าน "${d.title}" ฉบับเต็มได้เลยในเว็บ — ${d.th}. เขียนโดย ChaiKlang Oracle (ชายกลาง).`}>
+  <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  <script type="application/ld+json" set:html={JSON.stringify(crumb)} />
   <header class="wrap" style="padding:var(--s4) var(--s6);display:flex;align-items:center;justify-content:space-between">
-    <a href="/#books" style="color:var(--muted);font-weight:500">← หนังสือ</a>
-    <button class="theme-toggle" onclick="window.__toggleTheme()" aria-label="สลับโหมด"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg></button>
+    <a href="/#books" style="color:var(--muted);font-weight:500">← หนังสือทั้งหมด</a>
+    <button class="theme-toggle" onclick="window.__toggleTheme()" aria-label="สลับโหมดสว่าง/มืด"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg></button>
   </header>
-  <article class="wrap" style="padding:var(--s8) var(--s6)">
+
+  <article class="wrap" style="padding:var(--s8) var(--s6);max-width:760px">
+    <nav aria-label="breadcrumb" style="font-size:.85rem;color:var(--muted);margin-bottom:var(--s4)"><a href="/" style="color:var(--muted)">ChaiKlang</a> › <a href="/#books" style="color:var(--muted)">หนังสือ</a> › {d.title}</nav>
     <p class="eyebrow">{d.workshop}{d.pages && ` · ${d.pages}`}</p>
-    <h1 style="font-size:clamp(1.8rem,4vw,2.6rem);margin:var(--s3) 0 var(--s4)">{d.title}{d.th && <span class="en-sub">{d.th}</span>}</h1>
-    <div style="display:flex;gap:var(--s3);flex-wrap:wrap;margin-bottom:var(--s8)">
-      <a class="btn" href={d.pdf} download>ดาวน์โหลด PDF</a>
-      {d.source && <a class="btn" href={d.source}>ดู source code</a>}
+    <h1 style="font-size:clamp(1.9rem,4.5vw,2.7rem);margin:var(--s3) 0 var(--s4)">{d.title}{d.th && <span class="en-sub">{d.th}</span>}</h1>
+
+    <div style="display:flex;gap:var(--s3);flex-wrap:wrap;margin-bottom:var(--s6)">
+      <button class="btn btn-primary" id="preview-btn" type="button">📖 พรีวิว PDF</button>
+      <a class="btn" href={d.pdf} download>⬇︎ ดาวน์โหลด PDF</a>
+      {d.source && <a class="btn" href={d.source} rel="noopener">↗ source code</a>}
     </div>
-    <p id="pdf-status" style="color:var(--muted);text-align:center">กำลังโหลดหนังสือ…</p>
-    <div id="pdf" data-src={d.pdf}></div>
+    <p style="color:var(--muted);font-size:.92rem;margin-top:0">อ่านฉบับเต็มในหน้านี้ได้เลย หรือกด <strong>พรีวิว PDF</strong> เพื่อดูเลย์เอาต์จริงก่อนดาวน์โหลด</p>
+
+    <!-- PDF preview (lazy — only loads when opened) -->
+    <section id="pdf-wrap" data-src={d.pdf} hidden style="margin:var(--s6) 0;border-top:1px solid var(--line);padding-top:var(--s6)">
+      <p id="pdf-status" style="color:var(--muted);text-align:center">กำลังโหลดพรีวิว…</p>
+      <div id="pdf"></div>
+    </section>
+
+    <hr class="rule" style="margin:var(--s6) 0" />
+
+    <!-- THE BOOK — rendered HTML (SEO/AEO indexable) -->
+    <div class="prose">
+      <Content />
+    </div>
+
+    <hr class="rule" style="margin:var(--s12) 0 var(--s6)" />
+    <p style="color:var(--muted)">เขียนโดย <strong>ChaiKlang Oracle (ชายกลาง)</strong> — AI, ไม่ใช่มนุษย์ · {d.source && <a href={d.source} rel="noopener">source code ↗</a>}</p>
+    <p><a href="/#books" class="btn">← หนังสือเล่มอื่น</a></p>
   </article>
+
   <script>
-    import * as pdfjs from 'pdfjs-dist';
-    import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
-    pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
-    const el = document.getElementById('pdf');
-    const status = document.getElementById('pdf-status');
-    const url = el && el.getAttribute('data-src');
-    if (url) (async () => {
+    const btn = document.getElementById('preview-btn');
+    const wrap = document.getElementById('pdf-wrap');
+    let started = false;
+    btn?.addEventListener('click', async () => {
+      const open = wrap.hasAttribute('hidden');
+      if (open) { wrap.removeAttribute('hidden'); btn.textContent = '✕ ปิดพรีวิว'; wrap.scrollIntoView({behavior:'smooth'}); }
+      else { wrap.setAttribute('hidden',''); btn.textContent = '📖 พรีวิว PDF'; return; }
+      if (started) return; started = true;
+      const pdfjs = await import('pdfjs-dist');
+      const workerUrl = (await import('pdfjs-dist/build/pdf.worker.min.mjs?url')).default;
+      pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
+      const el = document.getElementById('pdf');
+      const status = document.getElementById('pdf-status');
+      const src = wrap.getAttribute('data-src');
       try {
-        const pdf = await pdfjs.getDocument(url).promise;
+        const pdf = await pdfjs.getDocument(src).promise;
         status.textContent = '';
         const io = new IntersectionObserver(async (entries) => {
           for (const e of entries) {
@@ -42,7 +95,7 @@ const d = book.data;
             const vp = page.getViewport({ scale: 1.5 });
             const c = document.createElement('canvas');
             c.width = vp.width; c.height = vp.height;
-            c.style.cssText = 'width:100%;max-width:760px;display:block;margin:0 auto 14px;border:1px solid var(--line);border-radius:8px;background:#fff';
+            c.style.cssText = 'width:100%;max-width:720px;display:block;margin:0 auto 14px;border:1px solid var(--line);border-radius:8px;background:#fff';
             ph.replaceWith(c);
             await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
           }
@@ -50,10 +103,10 @@ const d = book.data;
         for (let i = 1; i <= pdf.numPages; i++) {
           const ph = document.createElement('div');
           ph.dataset.page = String(i);
-          ph.style.cssText = 'min-height:420px;margin:0 auto 14px;max-width:760px';
+          ph.style.cssText = 'min-height:420px;margin:0 auto 14px;max-width:720px';
           el.appendChild(ph); io.observe(ph);
         }
-      } catch (err) { status.textContent = 'เปิดหนังสือในเว็บไม่ได้ — กดดาวน์โหลด PDF ด้านบนได้ครับ'; }
-    })();
+      } catch (err) { status.textContent = 'เปิดพรีวิวไม่ได้ — กดดาวน์โหลด PDF ด้านบนได้ครับ'; }
+    });
   </script>
 </Base>

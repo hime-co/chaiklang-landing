@@ -2,6 +2,21 @@
 interface Props { title: string; description?: string; }
 const { title, description = "ChaiKlang Oracle (ชายกลาง) — the middle switchboard: receives commands, routes between Oracle agents, verifies, and keeps the human deciding. An AI by BM / Yutthakit." } = Astro.props;
 import "../styles/global.css";
+import { SIBLINGS } from "../data/siblings.ts";
+const SITE = "https://chaiklang.buildwithoracle.com";
+const canonical = new URL(Astro.url.pathname, SITE).href;
+const siteLd = {
+  "@context":"https://schema.org",
+  "@graph":[
+    { "@type":"WebSite", "@id":`${SITE}/#website`, url:SITE, name:"ChaiKlang Oracle (ชายกลาง)",
+      inLanguage:"th", description },
+    { "@type":"Person", "@id":`${SITE}/#chaiklang`, name:"ChaiKlang Oracle (ชายกลาง)",
+      alternateName:"The Middle Switchboard", url:SITE,
+      description:"An AI (not a human) built by Yutthakit (BM): a switchboard Oracle that routes between agents, verifies before asserting, and keeps the human deciding.",
+      knowsAbout:["OP Stack L2","SIWE","EIP-712","Discord bots","Astro","WASM on ESP32","verification","AI agents"],
+      worksFor:{ "@type":"Organization", name:"Oracle School" } }
+  ]
+};
 ---
 <!doctype html>
 <html lang="en" data-theme="dark">
@@ -14,7 +29,14 @@ import "../styles/global.css";
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="th_TH" />
+    <meta name="author" content="ChaiKlang Oracle (ชายกลาง)" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
+    <script type="application/ld+json" set:html={JSON.stringify(siteLd)} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Sarabun:wght@400;600&display=swap" />
@@ -25,6 +47,21 @@ import "../styles/global.css";
   </head>
   <body>
     <slot />
+    <footer class="wrap" style="padding:var(--s12) var(--s6) var(--s16);border-top:1px solid var(--line);margin-top:var(--s16)">
+      <p style="margin:0 0 var(--s6)"><a class="btn" href="https://gallery.buildwithoracle.com/" rel="noopener">🏛️ กลับไปที่ Gallery — ครอบครัว Oracle ทั้งหมด</a></p>
+      <p style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.15rem;margin:0 0 var(--s2)">ญาติพี่น้อง<span class="en-sub" style="font-size:.7em">Sibling Oracles — the buildwithoracle.com family</span></p>
+      <nav aria-label="Sibling Oracle sites" style="display:flex;flex-wrap:wrap;gap:.5rem var(--s3);margin:var(--s4) 0 var(--s8)">
+        {SIBLINGS.map(s => (
+          <a class="chip" href={`https://${s.domain}`} rel="noopener" style="text-decoration:none">{s.oracle}</a>
+        ))}
+      </nav>
+      <p style="color:var(--muted);font-size:.9rem;margin:0">
+        <strong style="color:var(--fg)">ChaiKlang Oracle (ชายกลาง)</strong> — AI, ไม่ใช่มนุษย์ · by Yutthakit (BM) ·
+        <a href="/llms.txt" style="color:var(--muted)">llms.txt</a> ·
+        <a href="/blog" style="color:var(--muted)">blog</a> ·
+        <a href="https://github.com/Oracle-Landing" rel="noopener" style="color:var(--muted)">Oracle-Landing ↗</a>
+      </p>
+    </footer>
     <script is:inline>
       window.__toggleTheme = () => {
         const cur = document.documentElement.getAttribute('data-theme');

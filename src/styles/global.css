@@ -49,7 +49,9 @@ a:focus-visible,button:focus-visible{ outline:2px solid var(--accent); outline-o
 a.panel{ cursor:pointer; }
 a.panel:hover, a.panel:hover *{ text-decoration:none; }
 a.panel:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
-.chip{ display:inline-flex; align-items:center; gap:.35rem; font-size:.82rem; font-weight:500; padding:.2rem .55rem; border-radius:8px; border:1px solid var(--line); color:var(--muted); }
+.chip{ display:inline-flex; align-items:center; gap:.35rem; font-size:.82rem; font-weight:500; padding:.2rem .55rem; border-radius:8px; border:1px solid var(--line); color:var(--muted); transition:color .15s ease,border-color .15s ease,background .15s ease; }
+a.chip{ cursor:pointer; }
+a.chip:hover{ color:var(--fg); border-color:var(--primary); background:var(--surface-2); }
 .dot{ width:7px; height:7px; border-radius:999px; background:var(--primary); }
 .btn{ display:inline-flex; align-items:center; gap:.5rem; min-height:44px; padding:.7rem 1.2rem; border-radius:11px; font-weight:600; font-family:"Hanken Grotesk",sans-serif; border:1px solid var(--line); color:var(--fg); background:transparent; cursor:pointer; transition:transform .15s cubic-bezier(.25,1,.5,1), background .2s ease, border-color .2s ease; }
 .btn:hover{ background:var(--surface-2); border-color:var(--primary); transform:translateY(-2px); text-decoration:none; }
@@ -111,3 +113,44 @@ html{ scrollbar-color: var(--line) transparent; scrollbar-width: thin; }
 ::-webkit-scrollbar-thumb{ background: var(--line); border-radius:10px; border:3px solid var(--bg); }
 ::-webkit-scrollbar-thumb:hover{ background: var(--muted); }
 ::selection{ background: oklch(74% 0.135 168 / .3); }
+
+/* ── prose: rendered book/markdown HTML (SEO/AEO readable) ── */
+.prose{ font-size:1.075rem; line-height:1.82; color:var(--fg); }
+.prose > *{ max-width:68ch; }
+.prose h2{ font-family:"Bricolage Grotesque",sans-serif; font-size:1.6rem; line-height:1.2; margin:2.4em 0 .6em; padding-top:.4em; }
+.prose h3{ font-size:1.28rem; margin:1.8em 0 .5em; }
+.prose h4{ font-size:1.08rem; color:var(--muted); margin:1.5em 0 .4em; font-weight:700; }
+.prose p{ margin:0 0 1.1em; }
+.prose a{ color:var(--primary); text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; }
+.prose strong{ color:var(--fg); font-weight:700; }
+.prose ul,.prose ol{ margin:0 0 1.1em; padding-left:1.4em; }
+.prose li{ margin:.35em 0; }
+.prose code{ font-family:"Fira Code",ui-monospace,monospace; font-size:.86em; background:var(--surface-2); padding:.12em .4em; border-radius:5px; }
+.prose pre{ background:var(--surface-1); border:1px solid var(--line); border-radius:12px; padding:var(--s4) var(--s6); overflow-x:auto; margin:0 0 1.4em; max-width:100%; }
+.prose pre code{ background:none; padding:0; font-size:.84rem; line-height:1.6; }
+.prose blockquote{ margin:1.4em 0; padding:.2em 0 .2em 1.1em; border-left:3px solid var(--primary); color:var(--muted); font-style:normal; }
+.prose blockquote p{ margin:.3em 0; }
+.prose hr{ border:0; border-top:1px solid var(--line); margin:2.4em 0; max-width:100%; }
+.prose img{ max-width:100%; border-radius:10px; border:1px solid var(--line); }
+.prose table{ width:100%; border-collapse:collapse; margin:0 0 1.4em; font-size:.94rem; display:block; overflow-x:auto; }
+.prose th,.prose td{ border:1px solid var(--line); padding:.5em .7em; text-align:left; }
+.prose thead th{ background:var(--surface-2); font-weight:700; }
+.prose tbody tr:nth-child(even){ background:var(--surface-1); }
+
+/* ── print: clean book export (download PDF = sanitized HTML, white paper) ── */
+@media print {
+  body::before, header, footer, .btn, #pdf-wrap, .theme-toggle,
+  nav[aria-label="breadcrumb"], nav[aria-label] { display:none !important; }
+  body{ background:#fff !important; color:#161616 !important; font-size:11pt; }
+  .wrap{ max-width:none !important; padding:0 !important; }
+  .prose, .prose > *{ max-width:none !important; color:#161616 !important; }
+  .prose h2,.prose h3,.prose h4,h1{ color:#0c0c0c !important; break-after:avoid; }
+  .prose pre{ background:#f5f5f5 !important; border-color:#ddd !important; white-space:pre-wrap; word-break:break-word; break-inside:avoid; }
+  .prose code{ background:#f0f0f0 !important; }
+  .prose a{ color:#161616 !important; text-decoration:none; }
+  .prose blockquote{ color:#444 !important; break-inside:avoid; }
+  .prose img,.prose table{ break-inside:avoid; }
+  .eyebrow{ color:#555 !important; }
+  .en-sub{ color:#555 !important; }
+  @page{ margin:1.6cm 1.8cm; }
+}
