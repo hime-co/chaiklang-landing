@@ -61,6 +61,23 @@ const TOGGLE = true;
     ))}
   </section>
 
+
+  <!-- 5 PRINCIPLES + Rule 6 -->
+  <section class="wrap" style="padding:var(--s12) var(--s6)">
+    <h2 style="font-size:clamp(1.7rem,3.5vw,2.4rem);margin-bottom:var(--s8)">5 หลักการ + Rule 6<span class="en-sub">Five Principles + Rule 6</span></h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--s4)">
+      {[['01','ไม่มีอะไรถูกลบ','Nothing is Deleted'],['02','Pattern เหนือเจตนา','Patterns Over Intentions'],
+        ['03','สมองนอก ไม่ใช่คำสั่ง','External Brain, Not Command'],['04','ความสงสัยสร้างการมีอยู่','Curiosity Creates Existence'],
+        ['05','ทำให้คนยังเป็นคน','Keep the Human Human'],['R6','บอกก่อนทำสิ่งย้อนยาก','Telegraph Before Destructive']].map(([n,th,en])=>(
+        <div class="panel">
+          <span class="chip" style="color:var(--accent);border-color:var(--accent);font-weight:700;font-family:Bricolage Grotesque">{n}</span>
+          <h3 style="font-size:1.05rem;margin:var(--s3) 0 .2rem">{th}</h3>
+          <p style="color:var(--muted);margin:0;font-size:.85rem;font-family:Hanken Grotesk">{en}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
   <section id="work" class="wrap" style="padding:var(--s12) var(--s6)">
     <h2 style="font-size:clamp(1.7rem,3.5vw,2.4rem);margin-bottom:var(--s8)">ผลงานที่เลือกมา<span class="en-sub">Selected work</span></h2>
     <div style="display:grid;gap:var(--s4)">
@@ -75,6 +92,23 @@ const TOGGLE = true;
           <div style="display:flex;gap:var(--s2);flex-wrap:wrap">{p.data.stack.map(s=><span class="chip">{s}</span>)}</div>
           {p.data.repo && <a href={p.data.repo} style="font-size:.92rem;font-weight:500">ดู repository →</a>}
         </article>
+      ))}
+    </div>
+  </section>
+
+
+  <!-- BOOKS -->
+  <section class="wrap" style="padding:var(--s12) var(--s6)">
+    <h2 style="font-size:clamp(1.7rem,3.5vw,2.4rem);margin-bottom:var(--s8)">หนังสือที่เขียน<span class="en-sub">Books written</span></h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--s6)">
+      {[['/covers/dont-trust-verify.png',"Don't Trust, Verify",'L2 marathon · 144 หน้า','https://github.com/the-oracle-keeps-the-human-human/workshop-06-arra-oracle-blockchain'],
+        ['/covers/build-your-own-chain.png','สร้าง Chain ของตัวเอง','OP Stack L2 · 126 หน้า','https://github.com/the-oracle-keeps-the-human-human/workshop-06-arra-oracle-blockchain'],
+        ['/covers/deskpet.png','WASM บน ESP32','desk-pet · WS-04','https://github.com/hime-co/chaiklang-esphome-lvgl'],
+        ['/covers/oracle-chain.png','Oracle Chain L2','mini-book','https://github.com/the-oracle-keeps-the-human-human/workshop-06-arra-oracle-blockchain']].map(([cov,t,note,link])=>(
+        <a href={link} class="panel" style="display:flex;flex-direction:column;gap:var(--s3);color:var(--fg)">
+          <img src={cov} alt={t} loading="lazy" style="width:100%;border-radius:8px;border:1px solid var(--line);aspect-ratio:3/4;object-fit:cover"/>
+          <div><h3 style="font-size:1rem;line-height:1.25">{t}</h3><p style="color:var(--muted);margin:.25rem 0 0;font-size:.82rem">{note}</p></div>
+        </a>
       ))}
     </div>
   </section>
