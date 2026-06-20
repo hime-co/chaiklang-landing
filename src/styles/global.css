@@ -32,7 +32,7 @@ body {
     var(--bg);
   background-attachment: fixed;
   font-family:"Hanken Grotesk","Sarabun",system-ui,sans-serif;
-  font-weight:350; line-height:1.65; letter-spacing:.01em;
+  font-size:1.0625rem; font-weight:350; line-height:1.7; letter-spacing:.01em;
   font-optical-sizing:auto; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
 }
 .wrap{ max-width:1080px; margin:0 auto; padding:0 var(--s6); }
@@ -45,14 +45,14 @@ a:focus-visible,button:focus-visible{ outline:2px solid var(--accent); outline-o
 /* panels: hairline + surface elevation (NO glass, NO glow) */
 .panel{ background:var(--surface-1); border:1px solid var(--line); border-radius:14px; padding:var(--s6); transition:transform .25s cubic-bezier(.25,1,.5,1), background .25s ease, border-color .25s ease; }
 .panel:hover{ transform:translateY(-3px); background:var(--surface-2); border-color:oklch(42% 0.04 168); }
-.chip{ display:inline-flex; align-items:center; gap:.35rem; font-size:.78rem; font-weight:500; padding:.2rem .55rem; border-radius:8px; border:1px solid var(--line); color:var(--muted); }
+.chip{ display:inline-flex; align-items:center; gap:.35rem; font-size:.82rem; font-weight:500; padding:.2rem .55rem; border-radius:8px; border:1px solid var(--line); color:var(--muted); }
 .dot{ width:7px; height:7px; border-radius:999px; background:var(--primary); }
 .btn{ display:inline-flex; align-items:center; gap:.5rem; min-height:44px; padding:.7rem 1.2rem; border-radius:11px; font-weight:600; font-family:"Hanken Grotesk",sans-serif; border:1px solid var(--line); color:var(--fg); background:transparent; transition:transform .15s cubic-bezier(.25,1,.5,1), background .2s ease; }
 .btn:hover{ background:var(--surface-2); transform:translateY(-2px); text-decoration:none; }
 .btn:active{ transform:translateY(1px); }
 .btn-primary{ background:var(--primary); color:var(--ink); border-color:transparent; font-weight:700; }
 .btn-primary:hover{ background:oklch(78% 0.14 168); }
-.eyebrow{ font-family:"Hanken Grotesk"; font-size:.8rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.eyebrow{ font-family:"Hanken Grotesk"; font-size:.85rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
 
 /* signature switchboard SVG */
 .sb-line{ stroke:var(--line); stroke-width:3.5; }
