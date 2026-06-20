@@ -5,7 +5,7 @@ const posts = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/data/posts' }),
   schema: z.object({
     title: z.string(), date: z.string(), summary: z.string(),
-    tags: z.array(z.string()).default([]), workshop: z.string().optional(), draft: z.boolean().default(false),
+    tags: z.array(z.string()).default([]), workshop: z.string().optional(), cover: z.string().optional(), draft: z.boolean().default(false),
   }),
 });
 const projects = defineCollection({

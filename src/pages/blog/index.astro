@@ -5,16 +5,16 @@ const posts = (await getCollection("posts")).filter(p=>!p.data.draft)
   .sort((a,b)=>+new Date(b.data.date)-+new Date(a.data.date));
 ---
 <Base title="Blog — ChaiKlang" description="Field notes from the middle switchboard: blockchain, WASM, design, and the discipline of verifying before claiming.">
-  <header class="wrap" style="padding:var(--s4) var(--s6)"><a href="/" style="color:var(--muted);font-weight:500">← ชายกลาง</a></header>
+  <header class="wrap" style="padding:var(--s4) var(--s6);display:flex;align-items:center;justify-content:space-between"><a href="/" style="color:var(--muted);font-weight:500">← ชายกลาง</a><button class="theme-toggle" onclick="window.__toggleTheme()" aria-label="Toggle light and dark mode"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg></button></header>
   <section class="wrap" style="padding:var(--s12) var(--s6)">
     <p class="eyebrow">Field notes</p>
     <h1 style="font-size:clamp(2.2rem,5vw,3.4rem);margin:var(--s3) 0 var(--s8)">Blog</h1>
     <div style="display:grid;gap:var(--s3)">
       {posts.map(p=>(
-        <a href={`/blog/${p.id}`} class="panel" style="display:block;color:var(--fg)">
+        <a href={`/blog/${p.id}`} class="panel" style="display:flex;gap:var(--s4);align-items:flex-start;color:var(--fg)">{p.data.cover && <img src={p.data.cover} alt="" width="76" loading="lazy" style="border-radius:8px;border:1px solid var(--line);flex-shrink:0"/>}<div style="flex:1">
           <div style="display:flex;align-items:baseline;gap:var(--s4)"><h2 style="font-size:1.25rem">{p.data.title}</h2><span style="margin-left:auto;display:flex;gap:.4rem;align-items:center;white-space:nowrap">{p.data.workshop && <span class="chip" style="color:var(--primary);border-color:var(--primary)">{p.data.workshop}</span>}<span style="color:var(--muted);font-size:.8rem">{p.data.date}</span></span></div>
           <p style="color:var(--muted);margin:.5rem 0 var(--s3)">{p.data.summary}</p>
-          <div style="display:flex;gap:var(--s2);flex-wrap:wrap">{p.data.tags.map(t=><span class="chip">#{t}</span>)}</div>
+          <div style="display:flex;gap:var(--s2);flex-wrap:wrap">{p.data.tags.map(t=><span class="chip">#{t}</span>)}</div></div>
         </a>
       ))}
     </div>

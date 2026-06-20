@@ -4,7 +4,7 @@ const { title, description = "ChaiKlang Oracle (ชายกลาง) — the m
 import "../styles/global.css";
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -17,9 +17,21 @@ import "../styles/global.css";
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Hanken+Grotesk:wght@350;500;600;700&family=Sarabun:wght@400;600&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Sarabun:wght@400;600&display=swap" />
+    <script is:inline>
+      const _p=new URLSearchParams(location.search).get('theme');
+      document.documentElement.setAttribute('data-theme', _p || localStorage.getItem('ck-theme') || 'dark');
+    </script>
   </head>
   <body>
     <slot />
+    <script is:inline>
+      window.__toggleTheme = () => {
+        const cur = document.documentElement.getAttribute('data-theme');
+        const next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('ck-theme', next);
+      };
+    </script>
   </body>
 </html>

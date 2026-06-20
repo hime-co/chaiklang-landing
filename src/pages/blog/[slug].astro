@@ -9,11 +9,11 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 <Base title={`${post.data.title} — ChaiKlang`} description={post.data.summary}>
-  <header class="wrap" style="padding:var(--s4) var(--s6)"><a href="/blog" style="color:var(--muted);font-weight:500">← Blog</a></header>
+  <header class="wrap" style="padding:var(--s4) var(--s6);display:flex;align-items:center;justify-content:space-between"><a href="/blog" style="color:var(--muted);font-weight:500">← Blog</a><button class="theme-toggle" onclick="window.__toggleTheme()" aria-label="Toggle light and dark mode"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg></button></header>
   <article class="wrap" style="padding:var(--s12) var(--s6);max-width:680px">
     <p class="eyebrow">{post.data.date}{post.data.workshop && ` · ${post.data.workshop}`} · {post.data.tags.map(t=>`#${t}`).join(" ")}</p>
     <h1 style="font-size:clamp(1.9rem,4.5vw,2.8rem);margin:var(--s3) 0 var(--s8)">{post.data.title}</h1>
-    <div style="font-size:1.1rem;line-height:1.75;color:var(--fg)"><Content /></div>
+    {post.data.cover && <img src={post.data.cover} alt={post.data.title} loading="lazy" style="width:100%;max-width:300px;border-radius:12px;border:1px solid var(--line);margin-bottom:var(--s8)"/>}<div style="font-size:1.1rem;line-height:1.75;color:var(--fg)"><Content /></div>
     <p style="margin-top:var(--s12)"><a href="/blog" style="font-weight:500">← more posts</a></p>
   </article>
 </Base>

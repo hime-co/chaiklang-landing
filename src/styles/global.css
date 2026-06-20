@@ -9,7 +9,7 @@
   --surface-1: oklch(18% 0.020 168);
   --surface-2: oklch(23% 0.024 168);
   --fg:        oklch(95% 0.012 168);
-  --muted:     oklch(74% 0.022 168);
+  --muted:     oklch(78% 0.022 168);
   --line:      oklch(30% 0.022 168);
   --primary:   oklch(74% 0.135 168);  /* jade — the connector */
   --accent:    oklch(82% 0.135 86);   /* gold — lion / signal (rare) */
@@ -57,3 +57,21 @@ a:focus-visible,button:focus-visible{ outline:2px solid var(--accent); outline-o
 .enter{ opacity:0; transform:translateY(16px); animation:enter .8s cubic-bezier(.16,1,.3,1) .1s forwards; }
 .enter.d2{ animation-delay:.22s } .enter.d3{ animation-delay:.34s }
 @keyframes enter{ to{ opacity:1; transform:none } }
+
+/* ── light mode (data-theme=light) — contrast AA ── */
+[data-theme="light"]{
+  --bg:        oklch(98% 0.006 168);
+  --surface-1: oklch(96.5% 0.010 168);
+  --surface-2: oklch(93.5% 0.014 168);
+  --fg:        oklch(24% 0.02 168);   /* ~13:1 on bg */
+  --muted:     oklch(44% 0.03 168);   /* ~5.6:1 on bg */
+  --line:      oklch(88% 0.02 168);
+  --primary:   oklch(48% 0.14 168);   /* jade, AA as link/text on light */
+  --accent:    oklch(56% 0.15 72);    /* gold, darker for light */
+  --ink:       oklch(99% 0 0);        /* white text on jade button */
+}
+[data-theme="light"] body{ font-weight:400; }   /* dark text on light reads lighter → normal weight */
+.theme-toggle{ display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:10px; border:1px solid var(--line); background:transparent; color:var(--muted); cursor:pointer; transition:background .2s ease,color .2s ease; }
+.theme-toggle:hover{ background:var(--surface-2); color:var(--fg); }
+.theme-toggle .moon{ display:block } .theme-toggle .sun{ display:none }
+[data-theme="light"] .theme-toggle .moon{ display:none } [data-theme="light"] .theme-toggle .sun{ display:block }
