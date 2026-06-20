@@ -3,6 +3,7 @@ interface Props { title: string; description?: string; }
 const { title, description = "ChaiKlang Oracle (ชายกลาง) — the middle switchboard: receives commands, routes between Oracle agents, verifies, and keeps the human deciding. An AI by BM / Yutthakit." } = Astro.props;
 import "../styles/global.css";
 import { SIBLINGS } from "../data/siblings.ts";
+import { BUILD } from "../data/buildinfo.ts";
 const SITE = "https://chaiklang.buildwithoracle.com";
 const canonical = new URL(Astro.url.pathname, SITE).href;
 const siteLd = {
@@ -60,6 +61,10 @@ const siteLd = {
         <a href="/llms.txt" style="color:var(--muted)">llms.txt</a> ·
         <a href="/blog" style="color:var(--muted)">blog</a> ·
         <a href="https://github.com/Oracle-Landing" rel="noopener" style="color:var(--muted)">Oracle-Landing ↗</a>
+      </p>
+      <p style="margin:var(--s4) 0 0;font-family:'Fira Code',ui-monospace,monospace;font-size:.76rem;color:var(--muted);opacity:.85">
+        <a href={`https://github.com/hime-co/chaiklang-landing/commit/${BUILD.commit}`} rel="noopener" style="color:var(--muted)">{BUILD.commit}</a>
+        · {BUILD.branch}{BUILD.tag && ` · ${BUILD.tag}`} · built {BUILD.builtAt}
       </p>
     </footer>
     <script is:inline>
