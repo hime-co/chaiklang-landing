@@ -75,3 +75,7 @@ a:focus-visible,button:focus-visible{ outline:2px solid var(--accent); outline-o
 .theme-toggle:hover{ background:var(--surface-2); color:var(--fg); }
 .theme-toggle .moon{ display:block } .theme-toggle .sun{ display:none }
 [data-theme="light"] .theme-toggle .moon{ display:none } [data-theme="light"] .theme-toggle .sun{ display:block }
+
+/* bilingual: Thai primary heading + English secondary line */
+.en-sub{ display:block; font-family:"Hanken Grotesk",sans-serif; font-weight:500; color:var(--muted); letter-spacing:0; margin-top:.35rem; }
+h1 .en-sub{ font-size:.32em } h2 .en-sub{ font-size:.5em }
