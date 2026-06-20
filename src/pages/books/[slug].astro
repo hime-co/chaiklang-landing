@@ -10,7 +10,8 @@ const d = book.data;
 const { Content } = await render(book);
 const site = "https://chaiklang.buildwithoracle.com";
 const url = `${site}/books/${book.id}`;
-const mdSource = `https://github.com/hime-co/chaiklang-landing/blob/main/src/data/books/${book.id}.md`;
+const mdSource = `https://github.com/hime-co/chaiklang-landing/blob/main/public/books/${book.id}.md`;
+const mdRaw = `/books/${book.id}.md`;
 const ld = {
   "@context":"https://schema.org",
   "@type":"Book",
@@ -46,19 +47,24 @@ const crumb = {
     <p class="eyebrow">{d.workshop}{d.pages && ` · ${d.pages}`}</p>
     <h1 style="font-size:clamp(1.9rem,4.5vw,2.7rem);margin:var(--s3) 0 var(--s6)">{d.title}{d.th && <span class="en-sub">{d.th}</span>}</h1>
 
-    <!-- CONTENT immediately — the book (SEO/AEO indexable) -->
+    <!-- CONTENT immediately — teaser (~5 pages, SEO/AEO indexable) -->
     <div class="prose">
       <Content />
     </div>
 
+    <p style="margin-top:var(--s8);padding:var(--s4) var(--s6);border:1px dashed var(--line);border-radius:12px;color:var(--muted)">
+      ✦ นี่คือ <strong style="color:var(--fg)">ตัวอย่าง ~5 หน้าแรก</strong> ของหนังสือ — อ่านเต็มเล่มได้ที่ <strong style="color:var(--fg)">PDF</strong> (พรีวิว/ดาวน์โหลด) หรือ <strong style="color:var(--fg)">Markdown ฉบับเต็ม</strong> ด้านล่าง
+    </p>
+
     <!-- AFTER content: Markdown-on-GitHub link, then PDF actions -->
     <hr class="rule" id="actions-rule" style="margin:var(--s12) 0 var(--s8)" />
     <section id="book-actions" aria-label="อ่าน/ดาวน์โหลด">
-      <!-- in-site actions first (อยู่ในเว็บ) -->
-      <p style="margin:0 0 var(--s2);color:var(--muted);font-size:.92rem">ดูเป็น PDF — กดพรีวิวก่อนตัดสินใจดาวน์โหลดได้ (ไม่ต้องออกจากเว็บ)</p>
+      <!-- in-site actions first — ฉบับเต็มอยู่ในเว็บ ไม่ต้องออกไปไหน -->
+      <p style="margin:0 0 var(--s2);font-weight:600">อ่าน / เก็บฉบับเต็ม — ไม่ต้องออกจากเว็บ</p>
       <div style="display:flex;gap:var(--s3);flex-wrap:wrap;margin-bottom:var(--s4)">
         <button class="btn btn-primary" id="preview-btn" type="button">📖 พรีวิว PDF</button>
         <a class="btn" href={d.pdf} download>⬇︎ ดาวน์โหลด PDF</a>
+        <a class="btn" href={mdRaw}>📄 Markdown ฉบับเต็ม (ก๊อปให้ AI ได้)</a>
       </div>
 
       <section id="pdf-wrap" data-src={d.pdf} hidden style="margin:var(--s4) 0">
@@ -66,12 +72,10 @@ const crumb = {
         <div id="pdf"></div>
       </section>
 
-      <!-- off-site links last (พาออกนอกเว็บ) — repo อยู่ท้ายสุด -->
-      <p style="margin:var(--s8) 0 var(--s2);color:var(--muted);font-size:.92rem">อยากเอาเนื้อหาไปให้ AI อ่าน หรือดูโค้ด — ลิงก์พวกนี้จะพาออกนอกเว็บ</p>
-      <div style="display:flex;gap:var(--s3);flex-wrap:wrap">
-        <a class="btn" href={mdSource} rel="noopener">📄 Markdown บน GitHub ↗</a>
-        {d.source && <a class="btn" href={d.source} rel="noopener">↗ source code (repo)</a>}
-      </div>
+      <!-- off-site link last (พาออกนอกเว็บ) — repo อยู่ท้ายสุด -->
+      {d.source && (
+        <p style="margin:var(--s8) 0 0;color:var(--muted);font-size:.9rem">โค้ดต้นฉบับ (จะพาออกนอกเว็บ): <a href={d.source} rel="noopener">source code repo ↗</a></p>
+      )}
     </section>
 
     <hr class="rule" style="margin:var(--s12) 0 var(--s6)" />

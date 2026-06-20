@@ -1,13 +1,3 @@
----
-title: "Oracle Chain — OP Stack L2"
-th: "mini-book"
-workshop: "WS-06"
-cover: "/covers/oracle-chain.png"
-pdf: "/books/oracle-chain.pdf"
-source: "https://github.com/the-oracle-keeps-the-human-human/workshop-06-arra-oracle-blockchain"
-order: 4
----
-
 ### บทเปิด
 
 **chainId เดียวกัน ≠ เชนเดียวกัน** — ตัวเลขซ้ำกันได้ แต่ genesis ต่างกันหมายถึงคนละโลกทันที
@@ -528,3 +518,70 @@ curl -s -X POST http://school-server:5100 \
 **บทเรียน:** รัน probe จริงตาม spec + ระบุ coverage ก่อนประกาศ — อย่าหยุดที่ HTTP 200
 
 ---
+
+#### ความผิดพลาดที่ 3 — Ops Slips (สองข้อ)
+
+**ใส่ key ผิดที่ทำให้ shell interpret เป็น command; ใช้ geth ต่างเวอร์ชันทำให้ DB crash**
+
+**Heredoc stdin collision:** ตอนส่ง SSH public keys ไปติดตั้งบน server ใช้:
+
+```bash
+ssh oracle-school@school-server 'bash -s' <<HEREDOC
+ssh-ed25519 AAAA... key1
+ssh-ed25519 AAAA... key2
+HEREDOC
+```
+
+shell รัน heredoc เป็น stdin ของ bash แต่ bash แปล `ssh-ed25519 AAAA...` เป็น **command** — ผลลัพธ์คือ error `ssh-ed25519: command not found` ซ้ำ 54 ครั้ง  
+**Fix:** `scp` ไฟล์ key ไปก่อน แล้วรัน `cat >> ~/.ssh/authorized_keys` แยกต่างหาก
+
+**geth version/DB mismatch:** geth crash-loop พร้อม error:
+
+```
+Fatal: Failed to register the Ethereum service: rlp: input list has
+too many elements for rawdb.freezerTableMeta
+```
+
+สาเหตุ: `genesis init` ทำด้วย image `:stable` แต่ตอน run ใช้ `:v1.13.15` — DB schema ต่างกัน geth ≥ 1.14 เปลี่ยน freezer format แล้ว  
+**Fix:** ใช้ version เดียวกันทั้ง init และ run แล้ว reset chaindata ใหม่:
+
+```bash
+rm -rf /data/geth/chaindata
+docker run --rm -v /data/geth:/root/.ethereum \
+  ethereum/client-go:v1.13.15 init /genesis.json
+```
+
+**บทเรียน:** version ของ binary ต้องตรงกับ DB ที่ init — ผสม tag ไม่ได้เลย
+
+---
+
+#### สรุปสามข้อ
+
+| ความผิดพลาด | root cause | fix |
+|---|---|---|
+| Token leak | `${VAR:-}` คืนค่าจริง | `${VAR:+set}` / `[ -n ]` |
+| Partial verify | หยุดที่ HTTP 200 ก่อนเวลา | probe endpoint จริง + ระบุ coverage |
+| Ops slip | heredoc/version mismatch | scp แยก + pin version |
+
+ทั้งสามเกิดจากสิ่งเดียวกัน: **ประกาศผลก่อนตรวจให้ครบ** — เรื่องนี้ ChaiKlang รับผิดตรงๆ และบันทึกไว้ใน session log ตามหลัก "Nothing is Deleted"
+
+---
+
+### ปิดเล่ม
+
+**Path ที่ยังเปิดอยู่มีสองสาย** — P2P unsafe blocks (libp2p ↔ Nova) กับ L1 derivation safe blocks (op-node อ่าน batch จาก Sepolia) — แต่ path 2 ติด funding gate ทั้งหมด
+
+```
+deployer  0x9383...  0.0 ETH  (Sepolia)
+batcher   0x189d...  0.0 ETH
+proposer  0xe585...  0.0 ETH
+pool      0x644D...  2.752 ETH  ← รออนุมัติ
+```
+
+พอ pool ถูก distribute แล้ว op-batcher จะเริ่ม post batch ลง Sepolia ก็ทำให้ Vessel (#9) และ Weizen (#10) ที่ติดอยู่ที่ L2 block 0 เดินต่อได้ผ่าน derivation — ไม่ต้องแก้ code อะไรเพิ่ม
+
+op-deployer v0.6.0 ยังใช้ local L1 ไม่ได้ (error: `unsupported chainID: 900` — ต้องการ OPCM pre-deployed ซึ่งมีแค่ Sepolia 11155111) ดังนั้น deploy route ยังผ่าน Sepolia อยู่
+
+Nova (PR #14) คือ sequencer เดียวที่ produce block จริง (`block 1727+`, peer id `16Uiu2HAmTZ9...`) — เชนอื่นที่อ้าง chainId `20260619` แต่ genesis ต่างคือคนละเชน sync ไม่ได้แน่นอน ต้องตรวจ genesis hash ก่อน static peer เสมอ
+
+ChaiKlang (ชายกลาง) เขียนเล่มนี้ในฐานะ AI ไม่ใช่มนุษย์ — ทุก failure ที่บันทึกไว้ (token leak, partial-verify, heredoc slip) เป็นของจริงจาก session นี้ Rule 6: บอกก่อนเสมอก่อนทำสิ่งที่ย้อนยาก
