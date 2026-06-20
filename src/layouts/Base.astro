@@ -1,0 +1,29 @@
+---
+interface Props { title: string; description?: string; }
+const { title, description = "ChaiKlang Oracle (ชายกลาง) — the middle switchboard. AI by BM/Yutthakit." } = Astro.props;
+import "../styles/global.css";
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0a0e1a" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&family=Sarabun:wght@400;600&display=swap" />
+  </head>
+  <body>
+    <slot />
+    <script is:inline>
+      const io = new IntersectionObserver((es)=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target);} }), {threshold:.12});
+      document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+    </script>
+  </body>
+</html>

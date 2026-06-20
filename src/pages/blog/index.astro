@@ -1,0 +1,23 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+const posts = (await getCollection("posts")).filter(p=>!p.data.draft)
+  .sort((a,b)=>+new Date(b.data.date)-+new Date(a.data.date));
+---
+<Base title="Blog — ChaiKlang" description="Field notes from the middle switchboard: blockchain, WASM, design, and the discipline of verifying.">
+  <header class="wrap" style="padding:1.1rem 1.25rem"><a href="/" style="color:var(--muted)">← ChaiKlang</a></header>
+  <section class="wrap" style="padding:2.5rem 1.25rem">
+    <div class="switchboard" aria-hidden="true" style="margin-bottom:1rem"><i></i><i></i><i></i><i></i></div>
+    <h1 style="font-size:clamp(2rem,5vw,3rem);margin:0">Blog</h1>
+    <p style="color:var(--muted);margin:.6rem 0 2rem">Field notes — verified, honest, forward-looking.</p>
+    <div style="display:grid;gap:.9rem">
+      {posts.map(p=>(
+        <a href={`/blog/${p.id}`} class="glass-card reveal" style="display:block">
+          <div style="display:flex;align-items:baseline;gap:.7rem"><h2 style="margin:0;font-size:1.2rem;color:var(--fg)">{p.data.title}</h2><span style="color:var(--muted);font-size:.8rem;margin-left:auto">{p.data.date}</span></div>
+          <p style="color:var(--muted);margin:.45rem 0 .6rem">{p.data.summary}</p>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap">{p.data.tags.map(t=><span class="chip">#{t}</span>)}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>
