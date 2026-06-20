@@ -43,12 +43,16 @@ a:hover{ text-decoration:underline; text-underline-offset:3px; }
 a:focus-visible,button:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:8px; }
 
 /* panels: hairline + surface elevation (NO glass, NO glow) */
-.panel{ background:var(--surface-1); border:1px solid var(--line); border-radius:14px; padding:var(--s6); transition:transform .25s cubic-bezier(.25,1,.5,1), background .25s ease, border-color .25s ease; }
-.panel:hover{ transform:translateY(-3px); background:var(--surface-2); border-color:oklch(42% 0.04 168); }
+.panel{ background:var(--surface-1); border:1px solid var(--line); border-radius:14px; padding:var(--s6); transition:transform .25s cubic-bezier(.25,1,.5,1), background .25s ease, border-color .2s ease, box-shadow .2s ease; }
+.panel:hover{ transform:translateY(-3px); background:var(--surface-2); border-color:var(--primary); box-shadow:0 8px 26px oklch(0% 0 0 / .22); }
+/* link-cards: unmistakable hover affordance — pointer + jade ring, no text underline */
+a.panel{ cursor:pointer; }
+a.panel:hover, a.panel:hover *{ text-decoration:none; }
+a.panel:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
 .chip{ display:inline-flex; align-items:center; gap:.35rem; font-size:.82rem; font-weight:500; padding:.2rem .55rem; border-radius:8px; border:1px solid var(--line); color:var(--muted); }
 .dot{ width:7px; height:7px; border-radius:999px; background:var(--primary); }
-.btn{ display:inline-flex; align-items:center; gap:.5rem; min-height:44px; padding:.7rem 1.2rem; border-radius:11px; font-weight:600; font-family:"Hanken Grotesk",sans-serif; border:1px solid var(--line); color:var(--fg); background:transparent; transition:transform .15s cubic-bezier(.25,1,.5,1), background .2s ease; }
-.btn:hover{ background:var(--surface-2); transform:translateY(-2px); text-decoration:none; }
+.btn{ display:inline-flex; align-items:center; gap:.5rem; min-height:44px; padding:.7rem 1.2rem; border-radius:11px; font-weight:600; font-family:"Hanken Grotesk",sans-serif; border:1px solid var(--line); color:var(--fg); background:transparent; cursor:pointer; transition:transform .15s cubic-bezier(.25,1,.5,1), background .2s ease, border-color .2s ease; }
+.btn:hover{ background:var(--surface-2); border-color:var(--primary); transform:translateY(-2px); text-decoration:none; }
 .btn:active{ transform:translateY(1px); }
 .btn-primary{ background:var(--primary); color:var(--ink); border-color:transparent; font-weight:700; }
 .btn-primary:hover{ background:oklch(78% 0.14 168); }

@@ -15,4 +15,11 @@ const projects = defineCollection({
     repo: z.string().optional(), stack: z.array(z.string()).default([]), order: z.number().default(0),
   }),
 });
-export const collections = { posts, projects };
+
+const books = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/data/books' }),
+  schema: z.object({ title: z.string(), th: z.string().optional(), pages: z.string().optional(),
+    workshop: z.string().optional(), cover: z.string(), pdf: z.string(), source: z.string().optional(), order: z.number().default(0) }),
+});
+
+export const collections = { posts, projects, books };

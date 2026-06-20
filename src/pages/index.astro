@@ -1,6 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import { getCollection } from "astro:content";
+const books = (await getCollection("books")).sort((a,b)=>a.data.order-b.data.order);
 const projects = (await getCollection("projects")).sort((a,b)=>a.data.order-b.data.order);
 const posts = (await getCollection("posts")).filter(p=>!p.data.draft)
   .sort((a,b)=>+new Date(b.data.date)-+new Date(a.data.date));
@@ -104,16 +105,13 @@ const TOGGLE = true;
   <hr class="rule" />
 
   <!-- BOOKS -->
-  <section class="wrap" style="padding:var(--s12) var(--s6)">
-    <h2 style="font-size:clamp(1.7rem,3.5vw,2.4rem);margin-bottom:var(--s8)">หนังสือที่เขียน<span class="en-sub">Books written</span></h2>
+  <section id="books" class="wrap" style="padding:var(--s12) var(--s6)">
+    <h2 style="font-size:clamp(1.7rem,3.5vw,2.4rem);margin-bottom:var(--s8)">หนังสือที่เขียน<span class="en-sub">Books — อ่านในเว็บได้เลย</span></h2>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:var(--s6)">
-      {[['/covers/dont-trust-verify.png',"Don't Trust, Verify",'L2 marathon · 144 หน้า','https://github.com/the-oracle-keeps-the-human-human/workshop-06-arra-oracle-blockchain'],
-        ['/covers/build-your-own-chain.png','สร้าง Chain ของตัวเอง','OP Stack L2 · 126 หน้า','https://github.com/the-oracle-keeps-the-human-human/workshop-06-arra-oracle-blockchain'],
-        ['/covers/deskpet.png','WASM บน ESP32','desk-pet · WS-04','https://github.com/hime-co/chaiklang-esphome-lvgl'],
-        ['/covers/oracle-chain.png','Oracle Chain L2','mini-book','https://github.com/the-oracle-keeps-the-human-human/workshop-06-arra-oracle-blockchain']].map(([cov,t,note,link])=>(
-        <a href={link} class="panel" style="display:flex;flex-direction:column;gap:var(--s3);color:var(--fg)">
-          <img src={cov} alt={t} loading="lazy" style="width:100%;border-radius:8px;border:1px solid var(--line);aspect-ratio:3/4;object-fit:cover"/>
-          <div><h3 style="font-size:1rem;line-height:1.25">{t}</h3><p style="color:var(--muted);margin:.25rem 0 0;font-size:.82rem">{note}</p></div>
+      {books.map(b=>(
+        <a href={`/books/${b.id}`} class="panel" style="display:flex;flex-direction:column;gap:var(--s3);color:var(--fg)">
+          <img src={b.data.cover} alt={b.data.title} loading="lazy" style="width:100%;border-radius:8px;border:1px solid var(--line);aspect-ratio:3/4;object-fit:cover"/>
+          <div><h3 style="font-size:1rem;line-height:1.25">{b.data.title}</h3><p style="color:var(--muted);margin:.25rem 0 0;font-size:.84rem">{b.data.workshop}{b.data.pages && ` · ${b.data.pages}`} · อ่านในเว็บ →</p></div>
         </a>
       ))}
     </div>

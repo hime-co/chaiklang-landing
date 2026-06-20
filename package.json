@@ -8,7 +8,8 @@
     "@astrojs/cloudflare": "^12.6.12",
     "@astrojs/mdx": "^4.2.0",
     "@astrojs/sitemap": "^3.2.1",
-    "nanostores": "^1.1.0"
+    "nanostores": "^1.1.0",
+    "pdfjs-dist": "^4.10.38"
   },
   "devDependencies": {
     "tailwindcss": "^4.1.18",
