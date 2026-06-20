@@ -96,3 +96,6 @@ a:focus-visible,button:focus-visible{ outline:2px solid var(--accent); outline-o
 /* bilingual: Thai primary heading + English secondary line */
 .en-sub{ display:block; font-family:"Hanken Grotesk",sans-serif; font-weight:500; color:var(--muted); letter-spacing:0; margin-top:.35rem; }
 h1 .en-sub{ font-size:.32em } h2 .en-sub{ font-size:.5em }
+
+/* clean section divider (long-page rhythm) */
+.rule{ border:0; border-top:1px solid var(--line); max-width:1080px; margin:0 auto; }
