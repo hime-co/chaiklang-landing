@@ -18,10 +18,19 @@
   --s1:.25rem; --s2:.5rem; --s3:.75rem; --s4:1rem; --s6:1.5rem; --s8:2rem; --s12:3rem; --s16:4rem; --s24:6rem;
 }
 * { box-sizing: border-box; }
+body::before{ content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.05; mix-blend-mode:soft-light;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.wrap, header, section, footer{ position:relative; z-index:1; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important} }
 body {
-  margin:0; background: var(--bg); color: var(--fg);
+  margin:0; color: var(--fg);
+  background:
+    radial-gradient(1100px 620px at 80% -10%, oklch(46% 0.09 168 / .34), transparent 60%),
+    radial-gradient(820px 520px at 6% 14%, oklch(50% 0.10 86 / .20), transparent 58%),
+    radial-gradient(760px 900px at 98% 82%, oklch(42% 0.08 168 / .26), transparent 55%),
+    var(--bg);
+  background-attachment: fixed;
   font-family:"Hanken Grotesk","Sarabun",system-ui,sans-serif;
   font-weight:350; line-height:1.65; letter-spacing:.01em;
   font-optical-sizing:auto; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
@@ -46,7 +55,7 @@ a:focus-visible,button:focus-visible{ outline:2px solid var(--accent); outline-o
 .eyebrow{ font-family:"Hanken Grotesk"; font-size:.8rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
 
 /* signature switchboard SVG */
-.sb-line{ stroke:var(--line); stroke-width:2; }
+.sb-line{ stroke:var(--line); stroke-width:3.5; }
 .sb-node{ fill:var(--surface-2); stroke:var(--line); stroke-width:2; }
 .sb-node.on{ fill:var(--primary); stroke:var(--primary); }
 .sb-node.gold{ fill:var(--accent); stroke:var(--accent); }
@@ -66,11 +75,19 @@ a:focus-visible,button:focus-visible{ outline:2px solid var(--accent); outline-o
   --fg:        oklch(24% 0.02 168);   /* ~13:1 on bg */
   --muted:     oklch(44% 0.03 168);   /* ~5.6:1 on bg */
   --line:      oklch(88% 0.02 168);
-  --primary:   oklch(48% 0.14 168);   /* jade, AA as link/text on light */
+  --primary:   oklch(46% 0.15 168);   /* jade link — AA on white */
   --accent:    oklch(56% 0.15 72);    /* gold, darker for light */
   --ink:       oklch(99% 0 0);        /* white text on jade button */
 }
-[data-theme="light"] body{ font-weight:400; }   /* dark text on light reads lighter → normal weight */
+[data-theme="light"] .btn-primary{ background:oklch(42% 0.14 168); color:oklch(99% 0 0); }
+[data-theme="light"] .btn-primary:hover{ background:oklch(38% 0.13 168); }
+[data-theme="light"] body{ font-weight:400;
+  background:
+    radial-gradient(1000px 560px at 82% -8%, oklch(88% 0.07 168 / .55), transparent 60%),
+    radial-gradient(760px 480px at 6% 14%, oklch(90% 0.07 86 / .45), transparent 58%),
+    var(--bg);
+  background-attachment: fixed; }
+[data-theme="light"] body::before{ opacity:.035; mix-blend-mode:multiply; }   /* dark text on light reads lighter → normal weight */
 .theme-toggle{ display:inline-flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:10px; border:1px solid var(--line); background:transparent; color:var(--muted); cursor:pointer; transition:background .2s ease,color .2s ease; }
 .theme-toggle:hover{ background:var(--surface-2); color:var(--fg); }
 .theme-toggle .moon{ display:block } .theme-toggle .sun{ display:none }

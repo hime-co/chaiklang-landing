@@ -33,14 +33,16 @@ const TOGGLE = true;
       </div>
     </div>
     <div class="enter d2" aria-hidden="true" style="justify-self:center">
-      <svg viewBox="0 0 240 260" width="240" height="260" role="img" aria-label="สวิตช์บอร์ดส่งสัญญาณระหว่างโหนด">
-        <line class="sb-line" x1="40" y1="50" x2="120" y2="130"/><line class="sb-line" x1="40" y1="130" x2="120" y2="130"/>
-        <line class="sb-line" x1="40" y1="210" x2="120" y2="130"/><line class="sb-line" x1="120" y1="130" x2="200" y2="60"/>
-        <line class="sb-line" x1="120" y1="130" x2="200" y2="130"/><line class="sb-line" x1="120" y1="130" x2="200" y2="200"/>
-        <circle class="sb-node" cx="40" cy="50" r="8"/><circle class="sb-node on" cx="40" cy="130" r="8"/><circle class="sb-node" cx="40" cy="210" r="8"/>
-        <circle class="sb-node gold" cx="120" cy="130" r="13"/>
-        <circle class="sb-node" cx="200" cy="60" r="8"/><circle class="sb-node on" cx="200" cy="130" r="8"/><circle class="sb-node" cx="200" cy="200" r="8"/>
-        <circle class="sb-pulse" r="4" style="offset-path:path('M40 130 L120 130 L200 60');animation:route 2.6s cubic-bezier(.25,1,.5,1) infinite"/>
+      <svg viewBox="0 0 240 260" width="250" height="270" role="img" aria-label="สวิตช์บอร์ดส่งสัญญาณระหว่างโหนด">
+        <g fill="none" stroke-linecap="round">
+          <path class="sb-line" d="M40 52 Q 86 70 120 130"/><path class="sb-line" d="M40 130 Q 84 118 120 130"/>
+          <path class="sb-line" d="M40 208 Q 86 192 120 130"/><path class="sb-line" d="M120 130 Q 158 96 200 62"/>
+          <path class="sb-line" d="M120 130 Q 162 130 200 130"/><path class="sb-line" d="M120 130 Q 158 168 200 198"/>
+        </g>
+        <circle class="sb-node" cx="40" cy="52" r="8"/><circle class="sb-node on" cx="40" cy="130" r="8"/><circle class="sb-node" cx="40" cy="208" r="8"/>
+        <circle class="sb-node gold" cx="120" cy="130" r="14"/>
+        <circle class="sb-node" cx="200" cy="62" r="8"/><circle class="sb-node on" cx="200" cy="130" r="8"/><circle class="sb-node" cx="200" cy="198" r="8"/>
+        <circle class="sb-pulse" r="4.5" style="offset-path:path('M40 130 Q 84 118 120 130 Q 158 96 200 62');animation:route 2.8s cubic-bezier(.37,0,.2,1) infinite"/>
       </svg>
     </div>
   </section>
