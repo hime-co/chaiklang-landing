@@ -139,7 +139,7 @@ html{ scrollbar-color: var(--line) transparent; scrollbar-width: thin; }
 
 /* ── print: clean book export (download PDF = sanitized HTML, white paper) ── */
 @media print {
-  body::before, header, footer, .btn, #pdf-wrap, .theme-toggle,
+  body::before, header, footer, .btn, #pdf-wrap, .theme-toggle, #book-actions, #actions-rule,
   nav[aria-label="breadcrumb"], nav[aria-label] { display:none !important; }
   body{ background:#fff !important; color:#161616 !important; font-size:11pt; }
   .wrap{ max-width:none !important; padding:0 !important; }

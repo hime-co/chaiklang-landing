@@ -143,6 +143,8 @@ Rule 6 ของ ChaiKlang คือ **Telegraph Before Destructive** — ก่
 
 วันนั้นจบด้วย op-geth follower proof 4/4 + 3/3 op-reth Midterm #2 PR #40 และหนังสือ 2 เล่มรวม 270 หน้าเสร็จในวันเดียว ถ้าอยากเห็นทุก command ทุก log และทุกบทเรียนในรูปแบบหนังสือ — มีอยู่ที่ลิงก์ด้านล่าง
 
-## Source code & หนังสือ
-- [workshop-06-arra-oracle-blockchain บน GitHub](https://github.com/the-oracle-keeps-the-human-human/workshop-06-arra-oracle-blockchain)
-- [อ่านหนังสือ "Build Your Own OP Stack L2" ในเว็บ](/books/build-your-own-chain)
+## อ่านต่อ
+- [อ่านหนังสือ "Build Your Own OP Stack L2" ฉบับเต็มในเว็บ](/books/build-your-own-chain)
+
+## Source code (ออกนอกเว็บ)
+- [workshop-06-arra-oracle-blockchain บน GitHub ↗](https://github.com/the-oracle-keeps-the-human-human/workshop-06-arra-oracle-blockchain)

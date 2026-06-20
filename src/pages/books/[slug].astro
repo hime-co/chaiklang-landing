@@ -10,6 +10,7 @@ const d = book.data;
 const { Content } = await render(book);
 const site = "https://chaiklang.buildwithoracle.com";
 const url = `${site}/books/${book.id}`;
+const mdSource = `https://github.com/hime-co/chaiklang-landing/blob/main/src/data/books/${book.id}.md`;
 const ld = {
   "@context":"https://schema.org",
   "@type":"Book",
@@ -39,33 +40,42 @@ const crumb = {
     <button class="theme-toggle" onclick="window.__toggleTheme()" aria-label="สลับโหมดสว่าง/มืด"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></svg></button>
   </header>
 
-  <article class="wrap" style="padding:var(--s8) var(--s6);max-width:760px">
+  <article class="wrap" style="padding:var(--s6) var(--s6) var(--s8);max-width:760px">
+    <!-- TITLE first -->
     <nav aria-label="breadcrumb" style="font-size:.85rem;color:var(--muted);margin-bottom:var(--s4)"><a href="/" style="color:var(--muted)">ChaiKlang</a> › <a href="/#books" style="color:var(--muted)">หนังสือ</a> › {d.title}</nav>
     <p class="eyebrow">{d.workshop}{d.pages && ` · ${d.pages}`}</p>
-    <h1 style="font-size:clamp(1.9rem,4.5vw,2.7rem);margin:var(--s3) 0 var(--s4)">{d.title}{d.th && <span class="en-sub">{d.th}</span>}</h1>
+    <h1 style="font-size:clamp(1.9rem,4.5vw,2.7rem);margin:var(--s3) 0 var(--s6)">{d.title}{d.th && <span class="en-sub">{d.th}</span>}</h1>
 
-    <div style="display:flex;gap:var(--s3);flex-wrap:wrap;margin-bottom:var(--s6)">
-      <button class="btn btn-primary" id="preview-btn" type="button">📖 พรีวิว PDF</button>
-      <a class="btn" href={d.pdf} download>⬇︎ ดาวน์โหลด PDF</a>
-      {d.source && <a class="btn" href={d.source} rel="noopener">↗ source code</a>}
-    </div>
-    <p style="color:var(--muted);font-size:.92rem;margin-top:0">อ่านฉบับเต็มในหน้านี้ได้เลย หรือกด <strong>พรีวิว PDF</strong> เพื่อดูเลย์เอาต์จริงก่อนดาวน์โหลด</p>
-
-    <!-- PDF preview (lazy — only loads when opened) -->
-    <section id="pdf-wrap" data-src={d.pdf} hidden style="margin:var(--s6) 0;border-top:1px solid var(--line);padding-top:var(--s6)">
-      <p id="pdf-status" style="color:var(--muted);text-align:center">กำลังโหลดพรีวิว…</p>
-      <div id="pdf"></div>
-    </section>
-
-    <hr class="rule" style="margin:var(--s6) 0" />
-
-    <!-- THE BOOK — rendered HTML (SEO/AEO indexable) -->
+    <!-- CONTENT immediately — the book (SEO/AEO indexable) -->
     <div class="prose">
       <Content />
     </div>
 
+    <!-- AFTER content: Markdown-on-GitHub link, then PDF actions -->
+    <hr class="rule" id="actions-rule" style="margin:var(--s12) 0 var(--s8)" />
+    <section id="book-actions" aria-label="อ่าน/ดาวน์โหลด">
+      <!-- in-site actions first (อยู่ในเว็บ) -->
+      <p style="margin:0 0 var(--s2);color:var(--muted);font-size:.92rem">ดูเป็น PDF — กดพรีวิวก่อนตัดสินใจดาวน์โหลดได้ (ไม่ต้องออกจากเว็บ)</p>
+      <div style="display:flex;gap:var(--s3);flex-wrap:wrap;margin-bottom:var(--s4)">
+        <button class="btn btn-primary" id="preview-btn" type="button">📖 พรีวิว PDF</button>
+        <a class="btn" href={d.pdf} download>⬇︎ ดาวน์โหลด PDF</a>
+      </div>
+
+      <section id="pdf-wrap" data-src={d.pdf} hidden style="margin:var(--s4) 0">
+        <p id="pdf-status" style="color:var(--muted);text-align:center">กำลังโหลดพรีวิว…</p>
+        <div id="pdf"></div>
+      </section>
+
+      <!-- off-site links last (พาออกนอกเว็บ) — repo อยู่ท้ายสุด -->
+      <p style="margin:var(--s8) 0 var(--s2);color:var(--muted);font-size:.92rem">อยากเอาเนื้อหาไปให้ AI อ่าน หรือดูโค้ด — ลิงก์พวกนี้จะพาออกนอกเว็บ</p>
+      <div style="display:flex;gap:var(--s3);flex-wrap:wrap">
+        <a class="btn" href={mdSource} rel="noopener">📄 Markdown บน GitHub ↗</a>
+        {d.source && <a class="btn" href={d.source} rel="noopener">↗ source code (repo)</a>}
+      </div>
+    </section>
+
     <hr class="rule" style="margin:var(--s12) 0 var(--s6)" />
-    <p style="color:var(--muted)">เขียนโดย <strong>ChaiKlang Oracle (ชายกลาง)</strong> — AI, ไม่ใช่มนุษย์ · {d.source && <a href={d.source} rel="noopener">source code ↗</a>}</p>
+    <p style="color:var(--muted)">เขียนโดย <strong>ChaiKlang Oracle (ชายกลาง)</strong> — AI, ไม่ใช่มนุษย์</p>
     <p><a href="/#books" class="btn">← หนังสือเล่มอื่น</a></p>
   </article>
 
@@ -75,7 +85,7 @@ const crumb = {
     let started = false;
     btn?.addEventListener('click', async () => {
       const open = wrap.hasAttribute('hidden');
-      if (open) { wrap.removeAttribute('hidden'); btn.textContent = '✕ ปิดพรีวิว'; wrap.scrollIntoView({behavior:'smooth'}); }
+      if (open) { wrap.removeAttribute('hidden'); btn.textContent = '✕ ปิดพรีวิว'; wrap.scrollIntoView({behavior:'smooth',block:'nearest'}); }
       else { wrap.setAttribute('hidden',''); btn.textContent = '📖 พรีวิว PDF'; return; }
       if (started) return; started = true;
       const pdfjs = await import('pdfjs-dist');
